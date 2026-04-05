@@ -25,9 +25,11 @@ get_header();
     </h2>
 
     <p>
-      <?php echo function_exists('get_field') && get_field('description_hero') 
-        ? get_field('description_hero') 
-        : 'Bienvenue sur votre plateforme de partage entre voisins.'; ?>
+      <?php 
+        echo function_exists('get_field') && get_field('description_hero') 
+          ? get_field('description_hero') 
+          : "Bienvenue sur Entrevoisins, la plateforme qui connecte les habitants d'Abidjan pour partager, louer et emprunter du matériel entre voisins. Que vous ayez besoin d'outils de bricolage, d'équipement de cuisine, ou de matériel de transport, trouvez tout ce dont vous avez besoin près de chez vous. Ensemble, construisons une communauté solidaire et durable.";
+      ?>
     </p>
 
     <div class="hero-btns">
@@ -59,10 +61,22 @@ get_header();
           $image_url = 'https://via.placeholder.com/400x300?text=Image';
         }
     ?>
-        <div class="cat-card">
-          <img src="<?php echo esc_url($image_url); ?>" alt="">
-          <div class="cat-overlay"></div>
-          <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
+        <div class="cat-grid">
+            <div class="cat-card">
+              <img src="<?php echo esc_url($image_url); ?>" alt="">
+              <div class="cat-overlay"></div>
+              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
+            </div>
+            <div class="cat-card">
+              <img src="<?php echo esc_url($image_url); ?>" alt="">
+              <div class="cat-overlay"></div>
+              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
+            </div>
+            <div class="cat-card">
+              <img src="<?php echo esc_url($image_url); ?>" alt="">
+              <div class="cat-overlay"></div>
+              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
+            </div>
         </div>
     <?php
       endforeach;
@@ -76,43 +90,7 @@ get_header();
 <!-- BANNER -->
 <section class="banner reveal">
   <div class="banner-box">
-    <?php echo function_exists('get_field') && get_field('texte_banner') 
-      ? get_field('texte_banner') 
-      : 'Découvrez toutes les offres près de chez vous.'; ?>
-  </div>
-</section>
-
-<!-- ANNONCES -->
-<section id="annonces" class="categories reveal">
-  <h2 class="section-title">Dernières annonces</h2>
-
-  <div class="cat-grid">
-    <?php
-    $args = array(
-      'post_type' => 'post',
-      'posts_per_page' => 6
-    );
-
-    $query = new WP_Query($args);
-
-    if ($query->have_posts()) :
-      while ($query->have_posts()) : $query->the_post();
-    ?>
-        <div class="cat-card">
-          <?php if (has_post_thumbnail()) : ?>
-            <?php the_post_thumbnail('medium'); ?>
-          <?php else : ?>
-            <img src="https://via.placeholder.com/400x300?text=Annonce">
-          <?php endif; ?>
-
-          <div class="cat-overlay"></div>
-          <span class="cat-label"><?php the_title(); ?></span>
-        </div>
-    <?php
-      endwhile;
-      wp_reset_postdata();
-    else :
-    ?>
+    Découvrez toutes les offres sur les communes de Yopougon, Marcory, Cocody…
   </div>
 </section>
 
@@ -123,9 +101,26 @@ get_header();
   <a class="btn-link" onclick="openModal()">Déposez votre demande →</a>
 </section>
 
-<?php endif; ?>
+<!-- MODAL LOGIN -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Bienvenue</h2>
+    <p class="subtitle">Connectez-vous à votre compte</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="votre@email.com">
+    </div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" placeholder="••••••••">
+    </div>
+    <button class="btn-submit" onclick="handleLogin()">Se connecter</button>
+    <div class="modal-footer">Pas encore de compte ? <a onclick="closeModal()">Créer un compte</a></div>
+  </div>
+</div>
 
-<?php get_footer(); ?>
+<footer>© 2026 Entrevoisins – La communauté solidaire d'Abidjan</footer>
 
 <script>
 function openModal() {

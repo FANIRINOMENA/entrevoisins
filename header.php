@@ -14,26 +14,14 @@
   <!-- LOGO -->
   <div class="logo">
     <a href="<?php echo home_url(); ?>">
-      <?php 
-      if (has_custom_logo()) {
-        the_custom_logo();
-      } else {
-        bloginfo('name');
-      }
-      ?>
+        Entrevoisins
     </a>
   </div>
 
   <!-- MENU -->
   <div class="nav-links">
-    <?php
-      wp_nav_menu(array(
-        'theme_location' => 'primary',
-        'container' => false,
-        'menu_class' => 'menu'
-      ));
-    ?>
-
+    <a href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Chat en direct</a>
+    <a href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Admin Login</a>
     <!-- BTN LOGIN -->
     <?php if (!is_user_logged_in()) : ?>
       <button class="btn-connect" onclick="openModal()">→ Se connecter</button>
