@@ -1,30 +1,28 @@
 <?php
 // inc/vite.php
 if (!defined('ABSPATH')) exit;
-
 /**
  * =============================================================================
- *  Vite Manifest & Enqueue – Ballou Theme
+ *  Vite Manifest & Enqueue – Cocobe Theme
  * =============================================================================
  * - Lit le manifest Vite (post `npm run build`) pour récupérer l'entry + imports.
  * - Enfile proprement CSS/JS avec versioning (filemtime).
  * - Injecte AVANT le module :
- *     - window.BALLOU_API_BASE (ex: http://localhost/ballou/wp-json)
- *     - window.__BALLOU__.restBaseSite (ex: .../wp-json/site-info/v1/)
- *     - window.__BALLOU__.restBaseBallou (ex: .../wp-json/ballou/v1/)
- *     - window.__BALLOU__.nonce (nonce 'wp_rest' pour les appels REST authentifiés)
- *     - window.__BALLOU__.home, window.__BALLOU__.ajaxUrl, window.__BALLOU__.homeUrl
- * - Fournit un helper `ballou_maybe_enqueue_vite()` pour les templates.
+ *     - window.COCOBE_API_BASE (ex: http://localhost/COCOBE/wp-json)
+ *     - window.__COCOBE__.restBaseSite (ex: .../wp-json/site-info/v1/)
+ *     - window.__COCOBE__.restBaseCocobe (ex: .../wp-json/COCOBE/v1/)
+ *     - window.__COCOBE__.nonce (nonce 'wp_rest' pour les appels REST authentifiés)
+ *     - window.__COCOBE__.home, window.__COCOBE__.ajaxUrl, window.__COCOBE__.homeUrl
+ * - Fournit un helper `COCOBE_maybe_enqueue_vite()` pour les templates.
  * - Hook par défaut : global (à restreindre ensuite si besoin).
  * =============================================================================
  */
-
 /**
  * Parse manifest et retourne toutes les URLs publiques (JS/CSS) de l'entry + imports.
  *
  * @return array|null ['js' => string[], 'css' => string[]] ou null si introuvable
  */
-function ballou_vite_manifest()
+function COCOBE_vite_manifest()
 {
     static $cache = null;
     if ($cache !== null) return $cache;
@@ -125,13 +123,13 @@ function ballou_vite_manifest()
  * @param string|array $pages Slug(s) de page où charger (ex: 'contact' ou ['contact','panier']).
  *                            Laisser vide [] pour charger globalement (à restreindre ensuite).
  */
-function ballou_enqueue_vite_assets($pages = [])
+function COCOBE_enqueue_vite_assets($pages = [])
 {
     // Évite les doubles enqueues si ce helper est appelé plusieurs fois
     static $already_enqueued = false;
     if ($already_enqueued) return;
 
-    $manifest = ballou_vite_manifest();
+    $manifest = COCOBE_vite_manifest();
     if (!$manifest || (empty($manifest['js']) && empty($manifest['css']))) {
         if (defined('WP_DEBUG') && WP_DEBUG) error_log('[Vite Enqueue] No manifest or empty assets.');
         return;
@@ -159,7 +157,7 @@ function ballou_enqueue_vite_assets($pages = [])
             $version = file_exists($local_css_path) ? (string) filemtime($local_css_path) : null;
 
             wp_enqueue_style(
-                'ballou-vite-css-' . $i++,
+                'COCOBE-vite-css-' . $i++,
                 $css_url,
                 [],
                 $version
@@ -175,7 +173,7 @@ function ballou_enqueue_vite_assets($pages = [])
     // ------------------------------
     if (!empty($manifest['js'][0])) {
         $main_js   = $manifest['js'][0];
-        $js_handle = 'ballou-vite-main';
+        $js_handle = 'COCOBE-vite-main';
 
         $local_js_path = str_replace($theme_uri, $local_dir, $main_js);
         $version = file_exists($local_js_path) ? (string) filemtime($local_js_path) : null;
@@ -214,29 +212,29 @@ function ballou_enqueue_vite_assets($pages = [])
         // 2.1 API base générique (utilisée par ton TS via apiBase())
         wp_add_inline_script(
             $js_handle,
-            'window.BALLOU_API_BASE = ' . wp_json_encode($rest_url) . ';',
+            'window.COCOBE_API_BASE = ' . wp_json_encode($rest_url) . ';',
             'before'
         );
 
         // 2.2 Bases REST *nommées* + nonce + urls utiles (ajout homeUrl pour cohérence log)
         $rest_base_site   = trailingslashit(get_rest_url(null, 'site-info/v1'));
-        $rest_base_ballou = trailingslashit(get_rest_url(null, 'ballou/v1'));
+        $rest_base_COCOBE = trailingslashit(get_rest_url(null, 'COCOBE/v1'));
 
         wp_add_inline_script(
             $js_handle,
-            'window.__BALLOU__ = Object.assign(window.__BALLOU__ || {}, {' .
+            'window.__COCOBE__ = Object.assign(window.__COCOBE__ || {}, {' .
                 ' restBaseSite: '   . wp_json_encode($rest_base_site)   . ',' .
-                ' restBaseBallou: ' . wp_json_encode($rest_base_ballou) . ',' .
+                ' restBaseCOCOBE: ' . wp_json_encode($rest_base_COCOBE) . ',' .
                 ' home: '           . wp_json_encode($home_url)         . ',' .
                 ' homeUrl: '        . wp_json_encode($home_url)         . ',' .
                 ' ajaxUrl: '        . wp_json_encode($ajax_url)         . ',' .
                 ' nonce: "'         . esc_js($rest_nonce)               . '"'  .
-                '}); if (typeof console !== "undefined" && console.log) { console.log("[Vite Inline] REST bases OK:", window.__BALLOU__); }',
+                '}); if (typeof console !== "undefined" && console.log) { console.log("[Vite Inline] REST bases OK:", window.__COCOBE__); }',
             'before'
         );
 
         // 2.3 Globals additionnels (facultatif, via localize)
-        wp_localize_script($js_handle, '__BALLOU_GLOBALS__', [
+        wp_localize_script($js_handle, '__COCOBE_GLOBALS__', [
             'restUrl'  => esc_url($rest_url . '/'),
             'homeUrl'  => esc_url($home_url),
             'ajaxUrl'  => $ajax_url,
@@ -256,21 +254,23 @@ function ballou_enqueue_vite_assets($pages = [])
 /**
  * Hook d’enqueue (par défaut: global pour tests).
  * Après validation, remplacez par :
- *   add_action('wp_enqueue_scripts', fn() => ballou_enqueue_vite_assets(['contact', 'panier']));
+ *   add_action('wp_enqueue_scripts', fn() => COCOBE_enqueue_vite_assets(['contact', 'panier']));
  */
 add_action('wp_enqueue_scripts', function () {
     // Global (à restreindre ensuite aux pages utiles)
-    ballou_enqueue_vite_assets([]); // [] = global
+    COCOBE_enqueue_vite_assets([]); // [] = global
 }, 20);
 
 /**
  * Helper à appeler depuis un template pour forcer l’enqueue si nécessaire.
  * Idempotent : ne s’exécute qu’une fois.
  */
-function ballou_maybe_enqueue_vite()
+function COCOBE_maybe_enqueue_vite()
 {
     static $enqueued = false;
     if ($enqueued) return;
-    ballou_enqueue_vite_assets([]);
+    COCOBE_enqueue_vite_assets([]);
+
+    // the_content([....])
     $enqueued = true;
 }

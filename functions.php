@@ -3,19 +3,18 @@
 if (!defined('ABSPATH')) exit;
 
 // --- Définition des Constantes API (au début pour localize)
-if (!defined('WC_CONSUMER_KEY')) define('WC_CONSUMER_KEY', 'ck_c45c7f8d0c66c191817cb23c42e1de6ceb3babe8');  // Assurez-vous que c'est Read/Write pour admin
-if (!defined('WC_CONSUMER_SECRET')) define('WC_CONSUMER_SECRET', 'cs_f96a09cfef030021954c2613fd7768b37fad6293');  // Idem
+if (!defined('WC_CONSUMER_KEY')) define('WC_CONSUMER_KEY', 'à faire');  // Assurez-vous que c'est Read/Write pour admin
+if (!defined('WC_CONSUMER_SECRET')) define('WC_CONSUMER_SECRET', 'àrefaire');  // Idem
 
 // --- Debug manifest en <head> (facultatif)
 add_action('wp_head', function () {
-    $m = ballou_vite_manifest();
+    $m = COCOBE_vite_manifest();
     if (!$m) {
         echo "<!-- manifest introuvable -->";
     } else {
         echo "<!-- js: " . esc_html(implode(',', $m['js'])) . " -->";
     }
 });
-
 // Chargements des modules internes
 require_once get_stylesheet_directory() . '/inc/rest-show-product-category.php';
 require_once get_stylesheet_directory() . '/inc/rest_cart.php';
@@ -34,11 +33,49 @@ require_once get_stylesheet_directory() . '/inc/menus.php';
 require_once get_stylesheet_directory() . '/inc/vite.php';
 require_once get_stylesheet_directory() . '/inc/seo.php';
 require_once get_stylesheet_directory() . '/inc/ajax.php';
-// API REST Ballou (thankyou + checkout)
+// API REST COCOBE (thankyou + checkout)
 if (class_exists('WooCommerce')) {
     require_once get_template_directory() . '/inc/rest_thankyou.php'; // Ajustez path si fichier ailleurs (ex. /inc/thankyou_rest.php)
 }
 
+/**
+ * Enqueue CSS & JS front-end
+ */
+function cocobe_enqueue_assets() {
+
+    // 1. CSS principal
+    $css_path = '/assets/css/style.css';
+    $css_path = '/assets/css/style.css';
+    $css_file = get_template_directory() . $css_path;
+
+    if (file_exists($css_file)) {
+        wp_enqueue_style(
+            'cocobe-style',
+            get_template_directory_uri() . $css_path,
+            [],
+            filemtime($css_file) // version automatique pour éviter cache
+        );
+    }
+
+    // 2. JS principal (main.js)
+    $js_path = '/assets/js/produits.js';
+    $js_path = '/assets/js/compte.js';
+    $js_path = '/assets/js/faq.js';
+    $js_path = '/assets/js/header.js';
+    $js_file = get_template_directory() . $js_path;
+
+    if (file_exists($js_file)) {
+        wp_enqueue_script(
+            'cocobe-main',
+            get_template_directory_uri() . $js_path,
+            [],           // pas de dépendances
+            filemtime($js_file),
+            true          // footer
+        );
+    }
+
+}
+add_action('wp_enqueue_scripts', 'cocobe_enqueue_assets', 20);
 
 // Supports de thème
 add_action('after_setup_theme', function () {
@@ -52,33 +89,33 @@ add_action('wp_head', function () {
     if (is_user_logged_in() || current_user_can('administrator')) {  // Optionnel : debug only
 ?>
         <script>
-            window.__BALLOU__ = window.__BALLOU__ || {};
-            window.__BALLOU__.homeUrl = '<?php echo esc_js(trailingslashit(home_url())); ?>';
+            window.__COCOBE__ = window.__COCOBE__ || {};
+            window.__COCOBE__.homeUrl = '<?php echo esc_js(trailingslashit(home_url())); ?>';
         </script>
 <?php
     }
 });
 
-// functions.php – Corrigé : Injecte API base correcte avec /ballou/ si présent
-function enqueue_ballou_globals()
+// functions.php – Corrigé : Injecte API base correcte avec /COCOBE/ si présent
+function enqueue_COCOBE_globals()
 {
     if (!is_admin() && wp_script_is('main-bundle', 'enqueued')) {
         // Détecte le chemin WP correct (site_url() vs rest_url())
-        // rest_url() inclut automatiquement le répertoire '/ballou/' si configuré
-        $api_base = rest_url(); // Ex: http://localhost/ballou/wp-json (avec trailing slash)
+        // rest_url() inclut automatiquement le répertoire '/COCOBE/' si configuré
+        $api_base = rest_url(); // Ex: http://localhost/COCOBE/wp-json (avec trailing slash)
         $api_base = rtrim($api_base, '/'); // Remove trailing slash
 
-        wp_localize_script('main-bundle', '__BALLOU__', [
+        wp_localize_script('main-bundle', '__COCOBE__', [
             'siteUrl' => site_url(),
             'homeUrl' => home_url(),
-            'apiBase' => $api_base,  // NOUVEAU : Full rest_url (inclut /ballou/ si présent)
+            'apiBase' => $api_base,  // NOUVEAU : Full rest_url (inclut /COCOBE/ si présent)
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp_rest'),
             'restApiBase' => rest_url(),  // Alias, avec trailing slash
         ]);
     }
 }
-add_action('wp_enqueue_scripts', 'enqueue_ballou_globals', 20);
+add_action('wp_enqueue_scripts', 'enqueue_COCOBE_globals', 20);
 
 // ← Ajoutez en bas functions.php (test only ; retirez après)
 add_action('wp_mail_failed', function ($wp_error) {
@@ -109,6 +146,32 @@ add_action('wpcf7_admin_notices', function () {
     // Pas direct, mais check admin
 });
 
+// update cart_quantity
+add_action('wp_ajax_update_cart_qty', 'update_cart_qty');
+add_action('wp_ajax_nopriv_update_cart_qty', 'update_cart_qty');
+
+function update_cart_qty() {
+  $key = $_POST['key'];
+  $delta = intval($_POST['delta']);
+
+  $cart = WC()->cart->get_cart();
+  if (isset($cart[$key])) {
+    $new_qty = $cart[$key]['quantity'] + $delta;
+    if ($new_qty < 1) $new_qty = 1;
+    WC()->cart->set_quantity($key, $new_qty);
+  }
+  wp_die();
+}
+
+add_action('wp_ajax_remove_cart_item', 'remove_cart_item');
+add_action('wp_ajax_nopriv_remove_cart_item', 'remove_cart_item');
+
+function remove_cart_item() {
+  $key = $_POST['key'];
+  WC()->cart->remove_cart_item($key);
+  wp_die();
+}
+
 // Autorise les iframes Facebook (contourne X-Frame-Options et CSP pour embeds)
 function allow_fb_iframes()
 {
@@ -117,13 +180,80 @@ function allow_fb_iframes()
 }
 add_action('init', 'allow_fb_iframes');  // Ou 'send_headers'
 
-// Optionnel : Redirige ancien /my-account Woo vers /mon-compte
 add_action('template_redirect', function () {
+
+    // Vérifier que WooCommerce est actif
+    if (!function_exists('is_account_page')) return;
+
     if (is_account_page() && !is_page('mon-compte')) {
         wp_redirect(home_url('/mon-compte/'), 301);
         exit;
     }
+
 });
+
+// INIT WISHLIST SESSION
+add_action('init', function() {
+    if (!session_id()) {
+        session_start();
+    }
+    if (!isset($_SESSION['wishlist'])) {
+        $_SESSION['wishlist'] = [];
+    }
+});
+
+// ADD / REMOVE WISHLIST
+add_action('wp_ajax_toggle_wishlist', 'toggle_wishlist');
+add_action('wp_ajax_nopriv_toggle_wishlist', 'toggle_wishlist');
+
+function toggle_wishlist() {
+    $product_id = intval($_POST['product_id']);
+
+    if (in_array($product_id, $_SESSION['wishlist'])) {
+        $_SESSION['wishlist'] = array_diff($_SESSION['wishlist'], [$product_id]);
+    } else {
+        $_SESSION['wishlist'][] = $product_id;
+    }
+
+    echo count($_SESSION['wishlist']);
+    wp_die();
+}
+
+
+// GET WISHLIST
+add_action('wp_ajax_get_wishlist', 'get_wishlist');
+add_action('wp_ajax_nopriv_get_wishlist', 'get_wishlist');
+
+function get_wishlist() {
+    $items = [];
+
+    foreach ($_SESSION['wishlist'] as $id) {
+        $product = wc_get_product($id);
+
+        if ($product) {
+            $items[] = [
+                'id' => $id,
+                'name' => $product->get_name(),
+                'price' => $product->get_price_html(),
+                'img' => get_the_post_thumbnail_url($id, 'thumbnail'),
+                'link' => get_permalink($id)
+            ];
+        }
+    }
+
+    wp_send_json($items);
+}
+
+
+// pannier
+add_action('wp_loaded', function() {
+    if (isset($_GET['remove_item'])) {
+        WC()->cart->remove_cart_item($_GET['remove_item']);
+    }
+});
+
+// checkout
+add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 
 // Enqueue bundle main.tsx (build Vite) + localize (CORRIGÉ : Localize wcApiData AVEC keys API pour MyAccount fix 403)
 add_action('wp_enqueue_scripts', function () {
@@ -143,7 +273,7 @@ add_action('wp_enqueue_scripts', function () {
             'consumer_key' => WC_CONSUMER_KEY,  // Clé Read/Write pour admin (essentiel fix 403)
             'consumer_secret' => WC_CONSUMER_SECRET,  // Secret correspondant
             'nonce' => wp_create_nonce('wp_rest'),  // Pour /users/me ou fallback
-            'home_url' => home_url('/'),  // Inclut /ballou/ si subdir
+            'home_url' => home_url('/'),  // Inclut /COCOBE/ si subdir
             'ajax_url' => admin_url('admin-ajax.php'),  // Si AJAX alternatif
         ]);
 
@@ -162,6 +292,55 @@ add_filter('woocommerce_rest_check_permissions', function ($permission, $context
     }
     return $permission;
 }, 10, 4);
+
+// Met à jour le badge et le total du panier en AJAX
+add_filter('woocommerce_add_to_cart_fragments', function($fragments){
+    // Badge
+    ob_start(); ?>
+    <span class="badge"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
+    <?php
+    $fragments['span.badge'] = ob_get_clean();
+
+    // Total panier
+    ob_start(); ?>
+    <span class="panel-price"><?php echo WC()->cart->get_cart_total(); ?></span>
+    <?php
+    $fragments['span.panel-price'] = ob_get_clean();
+
+    // Liste produits
+    ob_start(); ?>
+    <?php if ( WC()->cart->get_cart_contents_count() > 0 ) : ?>
+        <ul class="cart-items-list">
+        <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
+            $product = $cart_item['data'];
+            $quantity = $cart_item['quantity'];
+            $name = $product->get_name();
+            $price = $product->get_price_html();
+            $thumb = get_the_post_thumbnail_url($product->get_id(), 'thumbnail');
+        ?>
+            <li class="cart-item">
+                <img src="<?php echo $thumb; ?>" alt="<?php echo esc_attr($name); ?>" width="40">
+                <div class="cart-item-info">
+                    <span class="cart-item-name"><?php echo $name; ?></span>
+                    <span class="cart-item-qty">x<?php echo $quantity; ?></span>
+                    <span class="cart-item-price"><?php echo $price; ?></span>
+                </div>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <svg class="cart-empty-icon" viewBox="0 0 80 80" fill="none" stroke="#aaa" stroke-width="2">
+            <path d="M20 16L14 26v38a6 6 0 006 6h40a6 6 0 006-6V26L60 16z"/>
+            <line x1="14" y1="26" x2="66" y2="26"/>
+            <path d="M50 36a10 10 0 01-20 0"/>
+        </svg>
+        <p class="panel-empty-text">No products in the cart.</p>
+    <?php endif; ?>
+    <?php
+    $fragments['.panel-body'] = ob_get_clean();
+
+    return $fragments;
+});
 
 // Hook 2 : Bypass validation customer update (unique, pas duplicate)
 add_filter('woocommerce_rest_customer_update_callback', '__return_true', 10, 4);
@@ -194,9 +373,9 @@ add_action('init', function () {
 // Flush permalinks auto après hooks (pour REST endpoints)
 add_action('after_switch_theme', 'flush_rewrite_rules');
 add_action('init', function () {
-    if (get_option('ballou_flush_permalinks_once') !== 'done') {
+    if (get_option('COCOBE_flush_permalinks_once') !== 'done') {
         flush_rewrite_rules();
-        update_option('ballou_flush_permalinks_once', 'done');
+        update_option('COCOBE_flush_permalinks_once', 'done');
     }
 }, 999);
 

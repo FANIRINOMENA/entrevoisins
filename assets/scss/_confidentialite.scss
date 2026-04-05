@@ -1,0 +1,122 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #faf8f5;
+  --ink: #1a1814;
+  --muted: #6b6660;
+  --accent: #b8986a;
+  --border: #e8e2d9;
+  --section-gap: 80px;
+}
+
+/* ── PAGE WRAPPER ── */
+.aliwax-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+
+/* ── TOP LINE ── */
+.aliwax-top-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto 48px;
+}
+
+/* ── TITRES ── */
+.aliwax-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 2rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 48px;
+  position: relative;
+}
+.aliwax-title::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+  margin: 16px auto 0;
+}
+
+/* ── TEXTE ── */
+.aliwax-text {
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+.aliwax-text strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ── DIVIDER ── */
+.aliwax-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--section-gap) 0;
+}
+
+/* ── RETOURS ── */
+.aliwax-returns {
+  text-align: center;
+}
+.aliwax-returns .aliwax-text {
+  margin-bottom: 20px;
+}
+
+/* ── LEGAL ── */
+.aliwax-legal {
+  text-align: center;
+}
+.aliwax-meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+.aliwax-meta strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+.aliwax-email {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.aliwax-email:hover {
+  border-color: var(--accent);
+}
+
+.aliwax-rights {
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── CONTACT ── */
+.aliwax-contact {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* ── ANIMATION ── */
+@keyframes aliwaxFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.aliwax-page > * {
+  animation: aliwaxFadeUp 0.6s ease both;
+}
+.aliwax-page > *:nth-child(1) { animation-delay: 0.05s; }
+.aliwax-page > *:nth-child(2) { animation-delay: 0.12s; }
+.aliwax-page > *:nth-child(3) { animation-delay: 0.18s; }
+.aliwax-page > *:nth-child(n+4) { animation-delay: 0.24s; }

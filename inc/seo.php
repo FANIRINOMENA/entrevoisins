@@ -4,12 +4,27 @@ if (!defined('ABSPATH')) exit;
 
 // Canonical par défaut (laisser Yoast/RankMath gérer si installé)
 add_action('wp_head', function () {
-    if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION')) return; // délégué au plugin SEO
-    if (is_singular() || is_post_type_archive('product') || is_product_taxonomy()) {
-        echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '" />';
-    }
-}, 1);
 
+    // Laisser les plugins SEO gérer
+    if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION')) return;
+
+    $canonical = '';
+
+    if (is_singular()) {
+        $canonical = get_permalink();
+
+    } elseif (is_post_type_archive('product')) {
+        $canonical = get_post_type_archive_link('product');
+
+    } elseif (function_exists('is_product_taxonomy') && is_product_taxonomy()) {
+        $canonical = get_term_link(get_queried_object());
+    }
+
+    if (!empty($canonical) && !is_wp_error($canonical)) {
+        echo '<link rel="canonical" href="' . esc_url($canonical) . '" />' . "\n";
+    }
+
+}, 1);
 
 // BreadcrumbList minimal (si pas de plugin)
 add_action('wp_head', function () {

@@ -1,0 +1,349 @@
+:root {
+    --cream: #f7f5f1;
+    --ivory: #faf9f6;
+    --charcoal: #1a1a1a;
+    --mid: #6b6b6b;
+    --light: #c8c4bc;
+    --accent: #8b6f5c;
+    --border: #e0dbd3;
+    --radius: 6px;
+    --transition: 0.3s;
+  }
+  
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+  }
+  
+  /* ── Stepper ── */
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1260px;
+    margin: 40px auto 48px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  
+  .step {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--light);
+    position: relative;
+  }
+  
+  .step .num {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    margin-bottom: 4px;
+    color: var(--light);
+  }
+  
+  .step.active {
+    color: var(--charcoal);
+  }
+  
+  .step.active .num {
+    color: var(--accent);
+  }
+  
+  .step.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--charcoal);
+  }
+  
+  /* ── Layout ── */
+  .cart-layout {
+    padding-top: 150px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 40px;
+    max-width: 1260px;
+    margin: auto;
+    align-items: start;
+  }
+  
+  /* ── Items ── */
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .cart-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    background: #fff;
+    border-radius: var(--radius);
+    transition: transform var(--transition);
+  }
+  
+  .cart-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .item-info .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  
+  .item-info .item-price {
+    font-size: 12px;
+    color: var(--mid);
+  }
+  
+  .qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: var(--radius);
+  }
+  
+  .qty button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--mid);
+    transition: color var(--transition);
+  }
+  
+  .qty button:hover {
+    color: var(--charcoal);
+  }
+  
+  .qty span {
+    min-width: 20px;
+    text-align: center;
+  }
+  
+  .item-total {
+    font-weight: 600;
+    font-size: 14px;
+    text-align: right;
+    min-width: 90px;
+  }
+  
+  .item-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--light);
+    transition: color var(--transition);
+  }
+  
+  .item-remove:hover {
+    color: var(--accent);
+  }
+  
+  /* ── Coupon ── */
+  .coupon-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .coupon-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color var(--transition);
+  }
+  
+  .coupon-row input:focus {
+    border-color: var(--charcoal);
+  }
+  
+  .btn-coupon {
+    background: var(--charcoal);
+    color: var(--ivory);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  
+  .btn-coupon:hover {
+    background: #333;
+  }
+  
+  /* ── Summary ── */
+  .cart-summary {
+    background: var(--cream);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+  }
+  
+  .summary-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  
+  .summary-row .label {
+    color: var(--mid);
+    text-transform: uppercase;
+  }
+  
+  .summary-row .value {
+    font-weight: 500;
+  }
+  
+  .shipping-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin: 16px 0;
+    font-size: 12px;
+  }
+  
+  .shipping-block .sh-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  
+  .shipping-note {
+    color: var(--mid);
+    font-size: 11px;
+  }
+  
+  .calc-shipping {
+    background: none;
+    border: none;
+    color: var(--charcoal);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 18px 0;
+  }
+  
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  
+  .total-row .t-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .total-row .t-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  /* Buttons */
+  .btn-checkout,
+  .btn-gpay {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font-size: 12px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .btn-checkout {
+    background: var(--charcoal);
+    color: var(--ivory);
+    transition: background var(--transition);
+  }
+  
+  .btn-checkout:hover {
+    background: #333;
+  }
+  
+  .btn-gpay {
+    background: #4285F4;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .btn-gpay:hover {
+    background: #357ae8;
+  }
+  
+  .gpay-logo {
+    font-weight: 700;
+  }
+  
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .cart-layout {
+      grid-template-columns: 1fr;
+    }
+  
+    .cart-item {
+      grid-template-columns: 70px 1fr;
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+  
+    .item-total,
+    .item-remove {
+      grid-column: 2;
+      text-align: left;
+    }
+  
+    .qty {
+      margin-top: 4px;
+    }
+  }
