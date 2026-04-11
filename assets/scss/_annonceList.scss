@@ -1,0 +1,135 @@
+.annonces-container {
+    background: #f9fafb;
+    min-height: 100vh;
+    padding: 60px 20px;
+  }
+  
+  .annonces-wrapper {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .annonces-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .annonces-header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .annonces-header p {
+    color: #666;
+  }
+  
+  /* FILTER */
+  .annonces-filter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .annonces-filter select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  /* GRID */
+  .annonces-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* CARD */
+  .annonce-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #000;
+    transition: 0.3s;
+  }
+  
+  .annonce-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+  
+  .annonce-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .no-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+  }
+  
+  .annonce-content {
+    padding: 15px;
+  }
+  
+  .annonce-category {
+    display: inline-block;
+    background: #e0edff;
+    color: #2563eb;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  
+  .annonce-content h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .annonce-content p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* PAGINATION */
+  .pagination {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .pagination a {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+  
+  .pagination .current {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+  }
+  
+  /* EMPTY */
+  .no-result {
+    text-align: center;
+    padding: 50px;
+    color: #777;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .annonces-header h1 {
+      font-size: 24px;
+    }
+  
+    .annonces-grid {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -1,0 +1,85 @@
+.shop-page {
+    font-family: 'Segoe UI', sans-serif;
+    background: #fff;
+    min-height: 100vh;
+  }
+  
+  .shop-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+  }
+  
+  /* HEADER */
+  .shop-header {
+    margin-bottom: 40px;
+  }
+  
+  .shop-header h1 {
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
+  
+  .shop-header p {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  /* PRODUCTS GRID */
+  .shop-products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+  }
+  
+  /* CARD */
+  .product-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* IMAGE */
+  .product-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  /* INFO */
+  .product-info {
+    padding: 15px;
+  }
+  
+  .product-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .price {
+    color: #000;
+    font-weight: bold;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .shop-products {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .shop-products {
+      grid-template-columns: 1fr;
+    }
+  
+    .shop-header h1 {
+      font-size: 32px;
+    }
+  }

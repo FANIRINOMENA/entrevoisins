@@ -1,0 +1,183 @@
+.my-annonces {
+    padding: 60px 20px;
+    background: #f9fafb;
+  }
+  
+  .container_my_annonce {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* HEADER */
+  .header_my_annonce {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .header_my_annonce h1 {
+    font-size: 28px;
+  }
+  
+  /* BUTTON */
+  .btn-primary_annc {
+    background: #2563eb;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .btn-primary_my_annonce {
+    background: #2563eb;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-top: 10rem;
+  }
+  
+  .btn-light {
+    flex: 1;
+    padding: 10px;
+    background: #eee;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+  }
+  
+  /* EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 60px;
+    background: #fff;
+    border-radius: 20px;
+  }
+  
+  .empty-state .icon {
+    font-size: 50px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  
+  /* GRID */
+  .annonces-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 5rem;
+  }
+  
+  /* CARD */
+  .annonce-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .annonce-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .no-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    color: #777;
+  }
+  
+  .content {
+    padding: 15px;
+  }
+  
+  .top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .category {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  /* BADGES */
+  .badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  
+  .pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .approved {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .rejected {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  /* TEXT */
+  .content h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .content p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  /* ACTIONS */
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .icon-btn {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit {
+    background: #eee;
+  }
+  
+  .delete {
+    background: #fee2e2;
+    color: red;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 992px) {
+    .annonces-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .annonces-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .header {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }

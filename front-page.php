@@ -1,181 +1,85 @@
-<?php
-/*
-Template Name: Home Entrevoisins
-*/
-get_header();
-?>
+<?php get_header(); ?>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="badge">
-      Nouveau à <?php bloginfo('name'); ?>
-    </div>
+  <div class="hero-overlay"></div>
 
-    <h1>
-      <?php echo function_exists('get_field') && get_field('titre_hero') 
-        ? get_field('titre_hero') 
-        : 'Accueil et partage !'; ?>
-    </h1>
+  <div class="container hero-content">
+    <div class="hero-grid">
 
-    <h2>
-      <?php echo function_exists('get_field') && get_field('sous_titre_hero') 
-        ? get_field('sous_titre_hero') 
-        : "L'art de vivre entre voisins"; ?>
-    </h2>
+      <div class="hero-text">
+        <span class="badge">Nouveau à Abidjan</span>
 
-    <p>
-      <?php 
-        echo function_exists('get_field') && get_field('description_hero') 
-          ? get_field('description_hero') 
-          : "Bienvenue sur Entrevoisins, la plateforme qui connecte les habitants d'Abidjan pour partager, louer et emprunter du matériel entre voisins. Que vous ayez besoin d'outils de bricolage, d'équipement de cuisine, ou de matériel de transport, trouvez tout ce dont vous avez besoin près de chez vous. Ensemble, construisons une communauté solidaire et durable.";
-      ?>
-    </p>
+        <h1>Accueil et partage!</h1>
 
-    <div class="hero-btns">
-      <a href="#annonces" class="btn-primary">Explorer les Annonces</a>
-      <button class="btn-secondary" onclick="openModal()">Déposer une Annonce</button>
+        <h3>L'Art de vivre à l'ivoirienne</h3>
+
+        <p>
+          Bienvenue sur Entrevoisins, la plateforme qui connecte les habitants
+          d'Abidjan pour partager, louer et emprunter du matériel entre voisins.
+          Trouvez tout ce dont vous avez besoin près de chez vous.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="<?php echo site_url('/announcements'); ?>" class="btn primary">Explorer les Annonces</a>
+          <a href="<?php echo site_url('/post-announcement'); ?>" class="btn white">Déposer une Annonce</a>
+        </div>
+      </div>
+
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1613232206738-d613b4b0de7d" alt="">
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- CATEGORIES -->
-<section class="categories reveal">
-  <h2 class="section-title">Parcourir par Catégorie</h2>
+<section class="categories">
+  <div class="container">
+    <h2>Parcourir par Catégorie</h2>
 
-  <div class="cat-grid">
-    <?php
-    $categories = get_terms(array(
-      'taxonomy' => 'category',
-      'hide_empty' => false
-    ));
+    <div class="categories-grid">
 
-    if (!empty($categories) && !is_wp_error($categories)) :
-      foreach ($categories as $cat) :
+      <?php
+      $categories = [
+        ["Bricolage & Travaux", "https://images.unsplash.com/photo-1552638194-6227090ea530"],
+        ["Cuisine", "https://images.unsplash.com/photo-1556911220-bff31c812dba"],
+        ["Loisirs & Sport", "https://images.unsplash.com/photo-1461896836934-ffe607ba8211"],
+        ["Transport", "https://images.unsplash.com/photo-1630352623287-4f1073a671ba"],
+        ["Électrique", "https://images.unsplash.com/photo-1621905251918-48416bd8575a"],
+        ["Stockage", "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d"],
+        ["Services RH", "https://images.unsplash.com/photo-1521737711867-e3b97375f902"],
+        ["Immobilier", "https://images.unsplash.com/photo-1636897246834-c134f3e5be44"],
+        ["Agricole", "https://images.unsplash.com/photo-1696428123140-045dc15d7b87"],
+        ["Dons & prêts", "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6"],
+      ];
 
-        // Image catégorie (ACF ou fallback)
-        $image = function_exists('get_field') ? get_field('image_categorie', $cat) : '';
-        $image_url = is_array($image) ? $image['url'] : $image;
+      foreach ($categories as $cat) : ?>
+        <a href="<?php echo site_url('/announcements'); ?>" class="category-card">
+          <img src="<?php echo $cat[1]; ?>" alt="">
+          <span><?php echo $cat[0]; ?></span>
+        </a>
+      <?php endforeach; ?>
 
-        if (!$image_url) {
-          $image_url = 'https://via.placeholder.com/400x300?text=Image';
-        }
-    ?>
-        <div class="cat-grid">
-            <div class="cat-card">
-              <img src="<?php echo esc_url($image_url); ?>" alt="">
-              <div class="cat-overlay"></div>
-              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
-            </div>
-            <div class="cat-card">
-              <img src="<?php echo esc_url($image_url); ?>" alt="">
-              <div class="cat-overlay"></div>
-              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
-            </div>
-            <div class="cat-card">
-              <img src="<?php echo esc_url($image_url); ?>" alt="">
-              <div class="cat-overlay"></div>
-              <span class="cat-label"><?php echo esc_html($cat->name); ?></span>
-            </div>
-        </div>
-    <?php
-      endforeach;
-    else :
-      echo '<p style="text-align:center;">Aucune catégorie trouvée</p>';
-    endif;
-    ?>
-  </div>
-</section>
-
-<!-- BANNER -->
-<section class="banner reveal">
-  <div class="banner-box">
-    Découvrez toutes les offres sur les communes de Yopougon, Marcory, Cocody…
-  </div>
-</section>
-
-<!-- EMPTY -->
-<section class="empty-state">
-  <h3>Aujourd'hui, vous n'avez pas trouvé ce que vous recherchez</h3>
-  <p>N'hésitez pas à laisser une annonce de recherche</p>
-  <a class="btn-link" onclick="openModal()">Déposez votre demande →</a>
-</section>
-
-<!-- MODAL LOGIN -->
-<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <h2>Bienvenue</h2>
-    <p class="subtitle">Connectez-vous à votre compte</p>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" placeholder="votre@email.com">
     </div>
-    <div class="form-group">
-      <label>Mot de passe</label>
-      <input type="password" placeholder="••••••••">
+
+    <div class="promo">
+      <p>Découvrez toutes les offres sur Yopougon, Marcory, Cocody...</p>
     </div>
-    <button class="btn-submit" onclick="handleLogin()">Se connecter</button>
-    <div class="modal-footer">Pas encore de compte ? <a onclick="closeModal()">Créer un compte</a></div>
   </div>
-</div>
+</section>
 
-<footer>© 2026 Entrevoisins – La communauté solidaire d'Abidjan</footer>
+<!-- CTA -->
+<section class="cta">
+  <div class="container text-center">
+    <h2>Aujourd'hui, vous n'avez pas trouvé ?</h2>
+    <p>Laissez une annonce, des loueurs vous contacteront.</p>
 
-<script>
-function openModal() {
-  const modal = document.getElementById('modal');
-  if (modal) {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-}
+    <a href="<?php echo site_url('/post-announcement'); ?>" class="link">
+      Déposez votre demande →
+    </a>
+  </div>
+</section>
 
-function closeModal() {
-  const modal = document.getElementById('modal');
-  if (modal) {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-}
-
-// CLICK OUTSIDE
-document.addEventListener("click", function(e) {
-  const modal = document.getElementById('modal');
-  if (modal && e.target === modal) {
-    closeModal();
-  }
-});
-
-// LOGIN FAKE
-function handleLogin() {
-  const btn = document.querySelector('.btn-submit');
-  if (!btn) return;
-
-  btn.textContent = 'Connexion...';
-
-  setTimeout(() => {
-    btn.textContent = '✓ Connecté!';
-    btn.style.background = '#22c55e';
-
-    setTimeout(() => {
-      closeModal();
-      btn.textContent = 'Se connecter';
-      btn.style.background = '';
-    }, 1000);
-  }, 1200);
-}
-
-// SCROLL ANIMATION
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-});
-
-document.querySelectorAll('.reveal').forEach(el => {
-  observer.observe(el);
-});
-</script>
+<?php get_footer(); ?>

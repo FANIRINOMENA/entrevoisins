@@ -1,58 +1,46 @@
 <?php
 /*
-Template Name: contact
+Template Name: Contact Page
 */
 get_header();
 ?>
 
-<main class="">
+<div class="contact-page">
 
-<section class="contact-section">
- 
-  <!-- Top: Contact + Aide rapide -->
-  <div class="contact-info">
-    <div>
-      <h2>Contact</h2>
-      <p>COCOBE COLLECTION ANGRÉ, Nouveau Chu Angré, Angré, Abidjan</p>
-      <p class="phone">+225 07 67 22 59 13</p>
-    </div>
-    <div>
-      <h2>Aide rapide</h2>
-      <p>Vous pouvez demander tout ce que vous voulez savoir sur nos produits ou services par l'intermédiaire de cet e-mail.</p>
-      <p class="email">contact@aliwaxcollection.com</p>
-    </div>
-  </div>
- 
-  <!-- Form -->
-  <div class="contact-form">
-    <h2>Envoyer un message</h2>
- 
-    <div class="form-grid">
-      <input type="text" placeholder="Nom et prénom*" />
-      <input type="tel" placeholder="N° de téléphone*" />
-    </div>
- 
-    <div class="form-grid">
-      <input type="email" placeholder="Mail*" />
-      <div class="select-wrapper">
-        <select>
-          <option>Partenariat et collaboration.</option>
-          <option>Support client</option>
-          <option>Commande</option>
-          <option>Autre</option>
-        </select>
-      </div>
-    </div>
- 
-    <div class="form-full">
-      <textarea placeholder="Message"></textarea>
-    </div>
- 
-    <button class="btn-envoyer">Envoyer</button>
-  </div>
- 
-</section>
+  <!-- HERO -->
+  <section class="contact-hero">
+    <h1>Get in touch</h1>
+    <p>Have questions about our collection? We'd love to hear from you.</p>
+  </section>
 
-</main>
+  <!-- CONTACT INFOS -->
+  <section class="contact-info">
+    
+    <a href="mailto:hello@midcenturydecor.com" class="info-card">
+      <div class="icon">📧</div>
+      <h3>Email</h3>
+      <p>hello@midcenturydecor.com</p>
+    </a>
+
+    <a href="tel:+49305550123" class="info-card">
+      <div class="icon">📞</div>
+      <h3>Phone</h3>
+      <p>(+49) 30 555 0123</p>
+    </a>
+
+    <div class="info-card">
+      <div class="icon">📍</div>
+      <h3>Location</h3>
+      <p>Berlin, Germany</p>
+    </div>
+
+  </section>
+
+  <!-- IMAGE -->
+  <section class="contact-image">
+    <img src="https://horizons-cdn.hostinger.com/f71e97e2-c216-4773-9235-d0bf6c7a37de/polina-kuzovkova-abevonowqtg-unsplash-2QDVr.jpg" alt="Contact image">
+  </section>
+
+</div>
 
 <?php get_footer(); ?>

@@ -1,57 +1,58 @@
-<?php if (!defined('ABSPATH')) exit; ?>
-
 <footer class="custom-footer">
 
   <div class="footer-container">
 
-    <!-- NEWSLETTER -->
-    <div class="footer-newsletter">
-      <h3>Recevez notre newsletter</h3>
-      <form method="post" action="#">
-        <input type="email" placeholder="Votre email" required>
-        <button type="submit">OK</button>
-      </form>
+    <div class="footer-grid">
+
+      <!-- LOGO + DESCRIPTION -->
+      <div class="footer-col">
+        <h2 class="logo">Entrevoisins</h2>
+        <p>
+          La plateforme de partage et d'entraide entre voisins à Abidjan.
+          Louez, empruntez, partagez en toute confiance.
+        </p>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="footer-col">
+        <h3>À propos</h3>
+        <ul>
+          <li><a href="<?php echo site_url('/about'); ?>">Notre histoire</a></li>
+          <li><a href="<?php echo site_url('/about'); ?>">Comment ça marche</a></li>
+          <li><a href="<?php echo site_url('/about'); ?>">Tarifs & Offres</a></li>
+          <li><a href="<?php echo site_url('/shop'); ?>">Boutique</a></li>
+        </ul>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="<?php echo site_url('/contact'); ?>">Contactez-nous</a></li>
+          <li><a href="<?php echo site_url('/contact'); ?>">Centre d'aide / FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- LEGAL -->
+      <div class="footer-col">
+        <h3>Légal</h3>
+        <ul>
+          <li><a href="<?php echo site_url('/terms'); ?>">Conditions d'Utilisation</a></li>
+          <li><a href="<?php echo site_url('/privacy'); ?>">Politique de Confidentialité</a></li>
+        </ul>
+      </div>
+
     </div>
 
-    <!-- COLONNES -->
-    <div class="footer-columns">
+    <!-- BOTTOM -->
+    <div class="footer-bottom">
 
-      <!-- MENU 1 -->
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <?php
-        wp_nav_menu(array(
-          'theme_location' => 'footer_1',
-          'container' => false,
-        ));
-        ?>
-      </div>
+      <p>© <?php echo date('Y'); ?> Entrevoisins. Tous droits réservés.</p>
 
-      <!-- MENU 2 -->
-      <div class="footer-col">
-        <h4>Informations</h4>
-        <?php
-        wp_nav_menu(array(
-          'theme_location' => 'footer_2',
-          'container' => false,
-        ));
-        ?>
-      </div>
-
-      <!-- CONTACT -->
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <p>Email : contact@entrevoisins.com</p>
-        <p>Tél : +261 XX XX XXX XX</p>
-      </div>
+      <p>Fait avec ❤ par l'équipe Entrevoisins</p>
 
     </div>
 
-  </div>
-
-  <!-- COPYRIGHT -->
-  <div class="footer-bottom">
-    © <?php echo date('Y'); ?> <?php bloginfo('name'); ?> – Tous droits réservés
   </div>
 
 </footer>
